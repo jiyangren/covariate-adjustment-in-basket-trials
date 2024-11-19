@@ -1,0 +1,25 @@
+#adjusted Bayesian hierarchical model without interaction term (ANCOVA I)
+
+model{
+
+	#likelihood
+	for (i in 1:N){
+	Y[i] ~ dbern(p[i])
+        logit(p[i]) <- alpha[basket[i]] + T_ik[i]*theta[basket[i]] + X[i,]%*%beta[,basket[i]]
+	}
+
+	#prior
+	for (k in 1:K){
+	alpha[k]~dnorm(0,1/100)
+	for (j in 1:dim(X)[2]){
+		beta[j,k]~dnorm(0,1/100)
+	}
+	theta[k]<-mu.theta+re.theta[k]
+	re.theta[k]~dnorm(0, tau.theta)
+	}
+
+	mu.theta~dnorm(0,1/100)
+	tau.theta<-pow(sigma.theta,-2)
+	sigma.theta~dt(0,prec.HT,df.HT)I(0,)
+
+}

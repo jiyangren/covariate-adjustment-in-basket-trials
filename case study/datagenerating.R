@@ -119,7 +119,7 @@ PV$treatment <- PV_treatment
 
 PV_centered <- data.frame(scale(PV,center = T,scale=F))
 
-PV_intercept <- log(63/(180-64))
+PV_intercept <- log(63/(180-63))
 
 PV_score <- PV_intercept+PV_centered$treatment*log(2.03)+PV_centered$age*log(1.01)+PV_centered$haemoglobin*log(1.02)+
   PV_centered$therapy*log(0.77)+PV_centered$sex*log(0.97)+PV_centered$thrombosis*log(0.63)+PV_centered$intolerant*log(0.94)+
@@ -272,7 +272,7 @@ ET$treatment <- ET_treatment
 
 ET$platelets_median <- ET$platelets>quantile(ET$platelets,1/3) & ET$platelets<=quantile(ET$platelets,2/3)
 ET$platelets_upper <- ET$platelets>quantile(ET$platelets,2/3)
-ET$allele_neither <- 1-ET_centered$JAK2V617F-ET$CALR
+ET$allele_neither <- 1-ET$JAK2V617F-ET$CALR
 
 ET_centered <- data.frame(scale(ET,center = T,scale=F))
 
