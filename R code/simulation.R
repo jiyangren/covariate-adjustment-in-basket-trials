@@ -8,7 +8,7 @@ K <- 4
 theta_k <- c(0,0,1,1)
 
 # model
-mod_file <- c("BHM","adjBHM","intBHM")
+mod_file <- c("BHM.txt","adjBHM.txt","intBHM.txt")
 
 # parameters and initial start
 alpha <- rep(0,4)
