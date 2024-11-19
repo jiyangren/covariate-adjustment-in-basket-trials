@@ -117,13 +117,13 @@ PV[PV_treatment==1,] <- PV_1
 PV[PV_treatment==0,] <- PV_0
 PV$treatment <- PV_treatment
 
-PV_scale <- data.frame(scale(PV,center = T,scale=F))
+PV_centered <- data.frame(scale(PV,center = T,scale=F))
 
 PV_intercept <- log(63/(180-64))
 
-PV_score <- PV_intercept+PV_scale$treatment*log(2.03)+PV_scale$age*log(1.01)+PV_scale$haemoglobin*log(1.02)+
-  PV_scale$therapy*log(0.77)+PV_scale$sex*log(0.97)+PV_scale$thrombosis*log(0.63)+PV_scale$intolerant*log(0.94)+
-  PV_scale$intoresis*log(0.7)+PV_scale$splemomegaly*log(0.13)+PV_scale$splenectomy*log(1.26)
+PV_score <- PV_intercept+PV_centered$treatment*log(2.03)+PV_centered$age*log(1.01)+PV_centered$haemoglobin*log(1.02)+
+  PV_centered$therapy*log(0.77)+PV_centered$sex*log(0.97)+PV_centered$thrombosis*log(0.63)+PV_centered$intolerant*log(0.94)+
+  PV_centered$intoresis*log(0.7)+PV_centered$splemomegaly*log(0.13)+PV_centered$splenectomy*log(1.26)
 
 PV_logit <- exp(PV_score)/(1+exp(PV_score))
 PV_CR <- c()
@@ -272,15 +272,15 @@ ET$treatment <- ET_treatment
 
 ET$platelets_median <- ET$platelets>quantile(ET$platelets,1/3) & ET$platelets<=quantile(ET$platelets,2/3)
 ET$platelets_upper <- ET$platelets>quantile(ET$platelets,2/3)
-ET$allele_neither <- 1-ET_scale$JAK2V617F-ET$CALR
+ET$allele_neither <- 1-ET_centered$JAK2V617F-ET$CALR
 
-ET_scale <- data.frame(scale(ET,center = T,scale=F))
+ET_centered <- data.frame(scale(ET,center = T,scale=F))
 
 ET_intercept <- log(50/(110-50))
 
-ET_score <- ET_intercept+ET_scale$treatment*log(1.14)+ET_scale$intolerant*log(1.17)+ET_scale$WBC*log(1.45)+
-  ET_scale$platelets_median*log(0.58)+ET_scale$platelets_upper*log(0.44)+
-  ET_scale$haemoglobin*log(1.82)+ET_scale$CALR*log(0.9)+ET_scale$allele_neither*log(0.79)
+ET_score <- ET_intercept+ET_centered$treatment*log(1.14)+ET_centered$intolerant*log(1.17)+ET_centered$WBC*log(1.45)+
+  ET_centered$platelets_median*log(0.58)+ET_centered$platelets_upper*log(0.44)+
+  ET_centered$haemoglobin*log(1.82)+ET_centered$CALR*log(0.9)+ET_centered$allele_neither*log(0.79)
 
 ET_logit <- exp(ET_score)/(1+exp(ET_score))
 ET_CR <- c()
