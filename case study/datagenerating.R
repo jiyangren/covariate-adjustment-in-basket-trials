@@ -311,3 +311,4 @@ if (sum(ET_CR[ET$treatment==0])>23) {
   ET_index <- which(ET$treatment==0 & ET_CR==1)
   ET_CR[ET_index[which(rank(ET_logit[ET$treatment==0 & ET_CR==1])<=ET_num)]]<-0
 }
+
