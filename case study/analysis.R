@@ -10,7 +10,10 @@ N <- sum(n_k)
 n_1k <- c(93,58)
 basket <- rep(1:2,n_k)
 
+covariate <- c("intolerant")
+covariate <- c("haemoglobin")
 covariate <- c("intolerant","haemoglobin")
+covariate <- intersect(colnames(PV_centered),colnames(ET_centered))[1:10]
 X_centered <- rbind(as.matrix(PV_centered[,covariate]),
                     as.matrix(ET_centered[,covariate]))
 d <- dim(X_centered)[2]
