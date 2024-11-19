@@ -34,7 +34,7 @@ N <- sum(n_k)
 n_1k <- c(93,58)
 basket <- rep(1:2,n_k)
 
-covariate <- intersect(colnames(PV_scale),colnames(ET_scale))[1:10]
+covariate <- intersect(colnames(PV_centered),colnames(ET_centered))[1:10]
 X_centered <- rbind(PV_centered[,covariate],
                     ET_centered[,covariate])
 
