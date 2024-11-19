@@ -4,13 +4,27 @@ library(rjags)
 # number of subtrials
 K <- 2
 
+# observed data
+n_k <- c(180,110)
+N <- sum(n_k)
+n_1k <- c(93,58)
+basket <- rep(1:2,n_k)
+
+covariate <- c("intolerant","haemoglobin")
+X_centered <- rbind(as.matrix(PV_centered[,covariate]),
+                    as.matrix(ET_centered[,covariate]))
+d <- dim(X_centered)[2]
+
+T_ik <- c(PV$treatment,ET$treatment)
+Y <- c(PV_CR,ET_CR)
+
 # model
 mod_file <- c("BHM.txt","adjBHM.txt","intBHM.txt")
 
 # parameters and initial start
 alpha <- rep(0,2)
-beta <- matrix(rep(0,2),ncol=2)
-gamma <- matrix(rep(0,2),ncol=2)
+beta <- matrix(rep(0,2*d),ncol=2)
+gamma <- matrix(rep(0,2*d),ncol=2)
 
 mu.theta <- 0
 tau.theta <- 1
@@ -28,25 +42,12 @@ ini <- list(BHM = list(alpha=alpha,re.theta=re.theta),
             intBHM = list(alpha=alpha,beta=beta,gamma=gamma,re.theta=re.theta))
 
 
-# observed data
-n_k <- c(180,110)
-N <- sum(n_k)
-n_1k <- c(93,58)
-basket <- rep(1:2,n_k)
-
-covariate <- c("intolerant")
-X_centered <- rbind(matrix(PV_centered[,covariate]),
-                    matrix(ET_centered[,covariate]))
-
-T_ik <- c(PV$treatment,ET$treatment)
-Y <- c(PV_CR,ET_CR)
-
 # draw samples from the posterior distributions using MCMC
 post <- function(K,N,basket,Y,T_ik,X,prec.HT,df.HT,mod_file,n.chains,ini,n.adapt,par,n.iter){
   if (mod_file=="BHM.txt") {
     data <- list(K=K,N=N,basket=basket,Y=Y,T_ik=T_ik,prec.HT=prec.HT,df.HT=df.HT)
   } else {
-    data <- list(K=K,N=N,basket=basket,Y=Y,T_ik=T_ik,X=X,d=dim(X)[2],prec.HT=prec.HT,df.HT=df.HT)
+    data <- list(K=K,N=N,basket=basket,Y=Y,T_ik=T_ik,X=X,d=d,prec.HT=prec.HT,df.HT=df.HT)
   }
   
   mod <- jags.model(file=mod_file,data=data,n.chains = n.chains,inits = ini,n.adapt = n.adapt)
