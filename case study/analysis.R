@@ -1,4 +1,5 @@
 set.seed(2024)
+library(rjags)
 
 # number of subtrials
 K <- 2
