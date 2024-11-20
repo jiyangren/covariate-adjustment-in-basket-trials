@@ -124,6 +124,9 @@ result_table[,3] <- sapply(1:3, function(j) quantile(post_theta[[k]][,j],0.025))
 result_table[,4] <- sapply(1:3, function(j) quantile(post_theta[[k]][,j],0.975))
 result_table[,5] <- (1-result_table[,2]/result_table[1,2])*100
 
+result_table <- round(result_table,3)
+result_table[,5] <- paste0(result_table[,5],"%")
+
 library(xtable)
 xtable(result_table,digits=3)
 
